@@ -5,10 +5,14 @@ using UnityEngine;
 public class Driver : MonoBehaviour
 {
     [SerializeField] float steerSpeed = 100f;
-    [SerializeField] float moveSpeed = 4f;
+    [SerializeField] float normalSpeed = 6f;
+    [SerializeField] float boostedSpeed = 10f;
+
+    float moveSpeed;
+
     void Start()
     {
-        //transform.Rotate(0,0,45);
+        moveSpeed = normalSpeed;
     }
 
     void Update()
@@ -17,5 +21,14 @@ public class Driver : MonoBehaviour
         float moveAmount = Input.GetAxis("Vertical") * moveSpeed * Time.deltaTime;
         transform.Rotate(0,0,-steerAmount);
         transform.Translate(0,moveAmount,0);
+    }
+
+    private void OnTriggerEnter2D(Collider2D other) {
+        if (other.tag == "Speed-up") {
+            moveSpeed = boostedSpeed;
+        }
+        else {
+            moveSpeed = normalSpeed;
+        }
     }
 }
